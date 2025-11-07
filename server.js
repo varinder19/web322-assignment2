@@ -9,13 +9,15 @@
 *  Published URL: https://web322-assignment2-beta.vercel.app/
 * 
 ********************************************************************************/
-
 const express = require("express");
 const projectData = require("./modules/projects");
+const path = require("path");
 
 const app = express();
+const HTTP_PORT = process.env.PORT || 8080;
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
+
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 
