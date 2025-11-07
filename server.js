@@ -10,63 +10,71 @@
 * 
 ********************************************************************************/
 const express = require("express");
-const projectData = require("./modules/projects");
 const path = require("path");
+const projectData = require("./data/projectData.json");
+const sectorData = require("./data/sectorData.json");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
+// ==============================
+// Middleware
+// ==============================
+
+// Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
+// Set EJS as the templating engine
 app.set("view engine", "ejs");
-app.set("views", __dirname + "/views");
+app.set("views", path.join(__dirname, "views"));
 
-// Home (landing)
-app.get("/", (req, res) => res.render("home"));
+// ==============================
+// Routes
+// ==============================
 
-// About
-app.get("/about", (req, res) => res.render("about"));
+// Home page
+app.get("/", (req, res) => {
+  res.render("home");
+});
 
-// Projects list (optionally filter by ?sector=)
+// About page
+app.get("/about", (req, res) => {
+  res.render("about");
+});
+
+// List all projects (with optional sector filter)
 app.get("/solutions/projects", (req, res) => {
-  const sector = req.query.sector;
+  const { sector } = req.query;
+  let projects = projectData;
+
   if (sector) {
-    projectData
-      .getProjectsBySector(sector)
-      .then((projects) => res.render("projects", { projects }))
-      .catch((err) => res.status(404).render("404", { message: err }));
+    projects = projects.filter(
+      (p) => p.sector && p.sector.toLowerCase() === sector.toLowerCase()
+    );
+  }
+
+  res.render("projects", { projects, sector });
+});
+
+// Single project details page
+app.get("/solutions/projects/:id", (req, res) => {
+  const project = projectData.find((p) => p.id == req.params.id);
+
+  if (project) {
+    res.render("project", { project });
   } else {
-    projectData
-      .getAllProjects()
-      .then((projects) => res.render("projects", { projects }))
-      .catch((err) => res.status(404).render("404", { message: err }));
+    res.status(404).render("404", { message: "Project not found" });
   }
 });
 
-// Single project by :id
-app.get("/solutions/projects/:id", (req, res) => {
-  projectData
-    .getProjectById(req.params.id)
-    .then((project) => res.render("project", { project }))
-    .catch((err) => res.status(404).render("404", { message: err }));
+// 404 fallback
+app.use((req, res) => {
+  res.status(404).render("404", { message: "Page not found" });
 });
 
-// 404 fallback
-app.use((req, res) =>
-  res
-    .status(404)
-    .render("404", { message: "I'm sorry, we're unable to find what you're looking for." })
+// ==============================
+// Start Server
+// ==============================
+app.listen(HTTP_PORT, () =>
+  console.log(`Server is running on port ${HTTP_PORT}`)
 );
-
-let initialized = false;
-
-projectData
-  .initialize()
-  .then(() => {
-    initialized = true;
-    console.log("Project data initialized successfully.");
-  })
-  .catch((err) => console.error(`Initialization error: ${err}`));
-
-// Export the app instead of using app.listen()
-module.exports = app;
