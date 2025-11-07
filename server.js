@@ -5,76 +5,87 @@
 *  Academic Integrity Policy:
 *  https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
 *  
-*  Name: Varinder Kaur   Student ID: 122452238   Date: Nov 6, 2025
+*  Name: Varinder Kaur   Student ID: 122452238   Date: Nov 7, 2025
 *  Published URL: https://web322-assignment2-beta.vercel.app/
 * 
 ********************************************************************************/
+
 const express = require("express");
-const path = require("path");
-const projectData = require("./data/projectData.json");
-const sectorData = require("./data/sectorData.json");
+const projectData = require("./modules/projects");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
-// ==============================
-// Middleware
-// ==============================
-
-// Serve static files from the "public" folder
-app.use(express.static(path.join(__dirname, "public")));
-
-// Set EJS as the templating engine
+// Set EJS as view engine and serve static assets
+app.use(express.static("public"));
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
 
-// ==============================
-// Routes
-// ==============================
+// ------------------ ROUTES ------------------ //
 
-// Home page
+// Home Page
 app.get("/", (req, res) => {
   res.render("home");
 });
 
-// About page
+// About Page
 app.get("/about", (req, res) => {
   res.render("about");
 });
 
-// List all projects (with optional sector filter)
+// Projects List Page (with optional ?sector= filter)
 app.get("/solutions/projects", (req, res) => {
-  const { sector } = req.query;
-  let projects = projectData;
+  const sector = req.query.sector;
 
-  if (sector) {
-    projects = projects.filter(
-      (p) => p.sector && p.sector.toLowerCase() === sector.toLowerCase()
-    );
-  }
+  // Map sector names to their corresponding IDs
+  const sectorMap = {
+    Buildings: 1,
+    Industry: 2,
+    Transportation: 3,
+    Electricity: 4,
+    Food: 5
+  };
 
-  res.render("projects", { projects, sector });
+  projectData
+    .getAllProjects()
+    .then((projects) => {
+      let filteredProjects = projects;
+
+      if (sector && sectorMap[sector]) {
+        filteredProjects = projects.filter(p => p.sector_id === sectorMap[sector]);
+      }
+
+      res.render("projects", { projects: filteredProjects });
+    })
+    .catch((err) => {
+      res.status(404).render("404", { message: err });
+    });
 });
 
-// Single project details page
+// Single Project by ID
 app.get("/solutions/projects/:id", (req, res) => {
-  const project = projectData.find((p) => p.id == req.params.id);
-
-  if (project) {
-    res.render("project", { project });
-  } else {
-    res.status(404).render("404", { message: "Project not found" });
-  }
+  projectData
+    .getProjectById(req.params.id)
+    .then((project) => res.render("project", { project }))
+    .catch((err) => res.status(404).render("404", { message: err }));
 });
 
-// 404 fallback
+// 404 Fallback
 app.use((req, res) => {
-  res.status(404).render("404", { message: "Page not found" });
+  res.status(404).render("404", { message: "I'm sorry, we're unable to find what you're looking for." });
 });
 
-// ==============================
-// Start Server
-// ==============================
-app.listen(HTTP_PORT, () =>
-  console.log(`Server is running on port ${HTTP_PORT}`)
-);
+// ------------------ SERVER START ------------------ //
+
+projectData
+  .initialize()
+  .then(() => {
+    app.listen(HTTP_PORT, () => {
+      console.log(`Server running on http://localhost:${HTTP_PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error(`Failed to start: ${err}`);
+    app.listen(HTTP_PORT, () => {
+      console.log(`Server started with warnings on http://localhost:${HTTP_PORT}`);
+    });
+  });
