@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html data-theme="dim">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= project.title %></title>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <div class="container mx-auto p-6">
+    <div class="hero bg-base-200 rounded-xl p-8 mb-8">
+      <h1 class="text-4xl font-bold mb-2"><%= project.title %></h1>
+      <p>Below you will find detailed information about the project.</p>
+    </div>
+
+    <img src="<%= project.feature_img_url %>" alt="<%= project.title %>" class="rounded-xl mb-6 w-full max-h-96 object-cover">
+    <p class="mb-4"><%= project.intro_short %></p>
+    <p class="mb-4"><strong>Impact:</strong> <%= project.impact %></p>
+    <a href="<%= project.original_source_url %>" target="_blank" class="btn btn-outline mb-6">Original Source</a>
+
+    <blockquote id="quote" class="italic text-lg p-4 bg-base-200 rounded-xl"></blockquote>
+
+    <a href="#" onclick="history.back(); return false;" class="btn btn-secondary mt-6">Back</a>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("https://dummyjson.com/quotes/random")
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("quote").innerHTML = `"${data.quote}" — ${data.author}`;
+        })
+        .catch(() => {
+          document.getElementById("quote").innerHTML = "“Keep pushing forward.” — Unknown";
+        });
+    });
+  </script>
+</body>
+</html>

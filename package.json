@@ -1,0 +1,23 @@
+{
+  "name": "web322-assignment2",
+  "version": "1.0.0",
+  "description": "WEB322 A2 with A1 service module",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "tw:build": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/main.css --watch"
+  },
+  "author": "Varinder Kaur",
+  "license": "MIT",
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "daisyui": "^4.12.10",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "tailwindcss": "^3.4.13"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0"
+  }
+}

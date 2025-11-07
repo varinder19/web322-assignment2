@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html data-theme="dim">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 Not Found</title>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+  <div class="hero min-h-[60vh] bg-base-200">
+    <div class="text-center">
+      <h1 class="text-5xl font-bold mb-4">404</h1>
+      <p><%= message || "The page you're looking for cannot be found." %></p>
+      <a href="/" class="btn btn-primary mt-4">Go Home</a>
+    </div>
+  </div>
+</body>
+</html>
