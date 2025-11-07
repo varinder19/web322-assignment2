@@ -27,27 +27,33 @@
     </div>
 
     <!-- Projects Grid -->
-    <div class="grid md:grid-cols-3 gap-8">
-      <% projects.forEach(project => { %>
-        <div class="card bg-base-100 shadow-xl">
-          <figure class="bg-base-300">
-            <% if (project.feature_img_url) { %>
-              <img src="<%= project.feature_img_url %>" alt="<%= project.title %>" class="w-full h-56 object-cover rounded-t-xl">
-            <% } else { %>
-              <div class="w-full h-56 flex items-center justify-center text-gray-400 italic">No image available</div>
-            <% } %>
-          </figure>
+    <% if (projects && projects.length > 0) { %>
+      <div class="grid md:grid-cols-3 gap-8">
+        <% projects.forEach(project => { %>
+          <div class="card bg-base-100 shadow-xl">
+            <figure class="bg-base-300">
+              <% if (project.feature_img_url && project.feature_img_url.trim() !== "") { %>
+                <img src="<%= project.feature_img_url %>" alt="<%= project.title %>" class="w-full h-56 object-cover rounded-t-xl">
+              <% } else { %>
+                <div class="w-full h-56 flex items-center justify-center text-gray-400 italic">No image available</div>
+              <% } %>
+            </figure>
 
-          <div class="card-body">
-            <h2 class="card-title"><%= project.title %></h2>
-            <p><%= project.summary %></p>
-            <div class="card-actions justify-end mt-4">
-              <a href="/solutions/projects/<%= project.id %>" class="btn btn-secondary">Details</a>
+            <div class="card-body">
+              <h2 class="card-title"><%= project.title %></h2>
+              <p><%= project.summary %></p>
+              <div class="card-actions justify-end mt-4">
+                <a href="/solutions/projects/<%= project.id %>" class="btn btn-secondary">Details</a>
+              </div>
             </div>
           </div>
-        </div>
-      <% }) %>
-    </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="text-center text-gray-400 italic mt-10">
+        No projects available for this sector.
+      </div>
+    <% } %>
   </div>
 </body>
 </html>

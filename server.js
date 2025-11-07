@@ -6,7 +6,7 @@
 *  https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
 *  
 *  Name: Varinder Kaur   Student ID: 122452238   Date: Nov 6, 2025
-*  Published URL: (update after Vercel deploy)
+*  Published URL: https://web322-assignment2-beta.vercel.app/
 * 
 ********************************************************************************/
 
@@ -14,7 +14,6 @@ const express = require("express");
 const projectData = require("./modules/projects");
 
 const app = express();
-const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -56,17 +55,15 @@ app.use((req, res) =>
     .render("404", { message: "I'm sorry, we're unable to find what you're looking for." })
 );
 
+let initialized = false;
+
 projectData
   .initialize()
   .then(() => {
-    app.listen(HTTP_PORT, () =>
-      console.log(`Server running on http://localhost:${HTTP_PORT}`)
-    );
+    initialized = true;
+    console.log("Project data initialized successfully.");
   })
-  .catch((err) => {
-    console.error(`Failed to start: ${err}`);
-    // Start anyway to show 404 with message if user hits routes
-    app.listen(HTTP_PORT, () =>
-      console.log(`Server started with warnings on http://localhost:${HTTP_PORT}`)
-    );
-  });
+  .catch((err) => console.error(`Initialization error: ${err}`));
+
+// Export the app instead of using app.listen()
+module.exports = app;
