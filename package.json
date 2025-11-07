@@ -5,8 +5,8 @@
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node server.js",
-    "tw:build": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/main.css --watch"
+    "build": "npx tailwindcss -i ./public/css/tailwind.css -o ./public/css/main.css --minify",
+    "start": "node server.js"
   },
   "author": "Varinder Kaur",
   "license": "MIT",
