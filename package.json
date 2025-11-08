@@ -5,19 +5,20 @@
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
-    "build": "npx tailwindcss -i ./public/css/tailwind.css -o ./public/css/main.css --minify",
-    "start": "node server.js"
+    "build": "echo 'Skipping Tailwind build on Vercel (already compiled locally)'",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "tw:build": "npx tailwindcss -i ./public/css/tailwind.css -o ./public/css/main.css --minify"
   },
   "author": "Varinder Kaur",
   "license": "MIT",
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.19",
-    "daisyui": "^4.12.10",
     "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "tailwindcss": "^3.4.13"
+    "express": "^4.19.2"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.0.0"
+    "tailwindcss": "^3.4.13",
+    "daisyui": "^4.12.10",
+    "@tailwindcss/typography": "^0.5.19"
   }
 }
