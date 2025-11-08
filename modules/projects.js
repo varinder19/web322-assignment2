@@ -1,4 +1,3 @@
-// modules/projects.js
 const path = require("path");
 
 let projectData, sectorData;

@@ -1,7 +1,7 @@
 {
   "name": "web322-assignment2",
   "version": "1.0.0",
-  "description": "WEB322 A2 with A1 service module",
+  "description": "WEB322 Assignment 2 - Climate Solutions",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

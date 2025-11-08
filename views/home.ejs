@@ -1,72 +1,55 @@
 <!DOCTYPE html>
-<html data-theme="dim">
+<html lang="en" data-theme="dim">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Climate Solutions</title>
-<link href="/css/main.css" rel="stylesheet">
+  <link href="/css/main.css" rel="stylesheet" />
 </head>
 <body>
   <%- include('partials/navbar') %>
 
-  <div class="container mx-auto p-6">
-    <div class="hero bg-base-200 rounded-xl p-8 mb-10">
-      <div class="text-center">
-        <h1 class="text-4xl font-bold mb-2">Explore Climate Solutions</h1>
-        <p class="mb-4">Learn how innovation fights climate change.</p>
-        <a href="/solutions/projects" class="btn btn-primary">View Projects</a>
+  <main class="container mx-auto px-6 py-10">
+    <!-- Hero Section -->
+    <section class="hero bg-base-200 rounded-2xl p-10 mb-12">
+      <div class="hero-content flex flex-col text-center">
+        <h1 class="text-4xl font-bold mb-3">Explore Climate Solutions</h1>
+        <p class="opacity-80 mb-6">
+          Learn how innovation fights climate change through practical actions and global collaboration.
+        </p>
+        <a href="/solutions/projects" class="btn btn-primary w-fit self-center">View Projects</a>
       </div>
-    </div>
+    </section>
 
-    <div class="grid md:grid-cols-3 gap-6">
-      <!-- Card 1 -->
-      <div class="card bg-base-100 shadow-xl">
-        <figure>
-          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&auto=format&fit=crop&q=80"
-               alt="Abandoned Farmland Restoration"
-               class="w-full h-60 object-cover rounded-t-xl">
-        </figure>
+    <!-- Featured Cards -->
+    <section class="grid gap-8 md:grid-cols-3">
+      <article class="card bg-base-100 shadow-xl">
+        <figure><img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFybXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600" alt="Abandoned Farmland Restoration" class="w-full h-60 object-cover" /></figure>
         <div class="card-body">
           <h2 class="card-title">Abandoned Farmland Restoration</h2>
           <p>Reviving degraded farmland and ecosystems.</p>
-          <div class="card-actions justify-end">
-            <a href="/solutions/projects/1" class="btn btn-secondary">Details</a>
-          </div>
+          <div class="card-actions justify-end"><a href="/solutions/projects/1" class="btn btn-secondary">Details</a></div>
         </div>
-      </div>
+      </article>
 
-      <!-- Card 2 -->
-      <div class="card bg-base-100 shadow-xl">
-        <figure>
-          <img src="https://images.unsplash.com/photo-1585336616548-5efff40bcdff?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=881"
-               alt="Alternative Cement"
-               class="w-full h-60 object-cover rounded-t-xl">
-        </figure>
+      <article class="card bg-base-100 shadow-xl">
+        <figure><img src="https://images.unsplash.com/photo-1585336616548-5efff40bcdff?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y2VtZW50JTIwYmxvY2t8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600" alt="Alternative Cement" class="w-full h-60 object-cover" /></figure>
         <div class="card-body">
           <h2 class="card-title">Alternative Cement</h2>
           <p>Reducing CO₂ emissions in construction materials.</p>
-          <div class="card-actions justify-end">
-            <a href="/solutions/projects/2" class="btn btn-secondary">Details</a>
-          </div>
+          <div class="card-actions justify-end"><a href="/solutions/projects/2" class="btn btn-secondary">Details</a></div>
         </div>
-      </div>
+      </article>
 
-      <!-- Card 3 -->
-      <div class="card bg-base-100 shadow-xl">
-        <figure>
-          <img src="https://images.unsplash.com/photo-1626983274483-25fdcb5bb4de?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGxpZ2h0bmluZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600"
-               alt="Efficient Lighting"
-               class="w-full h-60 object-cover rounded-t-xl">
-        </figure>
+      <article class="card bg-base-100 shadow-xl">
+        <figure><img src="https://images.unsplash.com/photo-1587168173357-99c7e95fb5cd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2luZG1pbGxzfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600" alt="Efficient Lighting" class="w-full h-60 object-cover" /></figure>
         <div class="card-body">
           <h2 class="card-title">Efficient Lighting</h2>
           <p>Improving lighting efficiency for energy savings.</p>
-          <div class="card-actions justify-end">
-            <a href="/solutions/projects/3" class="btn btn-secondary">Details</a>
-          </div>
+          <div class="card-actions justify-end"><a href="/solutions/projects/3" class="btn btn-secondary">Details</a></div>
         </div>
-      </div>
-    </div>
-  </div>
+      </article>
+    </section>
+  </main>
 </body>
 </html>
