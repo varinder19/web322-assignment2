@@ -11,58 +11,73 @@
 ********************************************************************************/
 
 const express = require("express");
+const path = require("path");
 const projectData = require("./modules/projects");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
-app.use(express.static("public"));
+// ✅ Explicitly set the views directory for Vercel
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// Initialize project data first
+// ✅ Serve static files
+app.use(express.static(path.join(__dirname, "public")));
+
+// ------------------ ROUTES ------------------ //
+
+// Home Page
+app.get("/", (req, res) => {
+  res.render("home");
+});
+
+// About Page
+app.get("/about", (req, res) => {
+  res.render("about");
+});
+
+// Projects list (with optional ?sector= filter)
+app.get("/solutions/projects", async (req, res) => {
+  try {
+    const sector = req.query.sector;
+    const projects = sector
+      ? await projectData.getProjectsBySector(sector)
+      : await projectData.getAllProjects();
+
+    res.render("projects", {
+      projects,
+      currentSector: sector || "All",
+    });
+  } catch (err) {
+    res.status(404).render("404", { message: err });
+  }
+});
+
+// Single Project page
+app.get("/solutions/projects/:id", async (req, res) => {
+  try {
+    const project = await projectData.getProjectById(req.params.id);
+    res.render("project", { project });
+  } catch (err) {
+    res.status(404).render("404", { message: err });
+  }
+});
+
+// 404 fallback route
+app.use((req, res) => {
+  res.status(404).render("404", {
+    message: "I'm sorry, we can't find what you need.",
+  });
+});
+
+// Initialize project data, then start the server
 projectData
   .initialize()
   .then(() => {
-    // Home Page
-    app.get("/", (req, res) => res.render("home"));
-
-    // About Page
-    app.get("/about", (req, res) => res.render("about"));
-
-    // Projects list (optional ?sector filter)
-    app.get("/solutions/projects", async (req, res) => {
-      try {
-        const sector = req.query.sector;
-        const projects = sector
-          ? await projectData.getProjectsBySector(sector)
-          : await projectData.getAllProjects();
-        res.render("projects", { projects, currentSector: sector || "All" });
-      } catch (err) {
-        res.status(404).render("404", { message: err });
-      }
+    app.listen(HTTP_PORT, () => {
+      console.log(`Server running on http://localhost:${HTTP_PORT}`);
     });
-
-    // Single Project page
-    app.get("/solutions/projects/:id", async (req, res) => {
-      try {
-        const project = await projectData.getProjectById(req.params.id);
-        res.render("project", { project });
-      } catch (err) {
-        res.status(404).render("404", { message: err });
-      }
-    });
-
-    // 404 fallback
-    app.use((req, res) => {
-      res
-        .status(404)
-        .render("404", { message: "I'm sorry, we can't find what you need." });
-    });
-
-    app.listen(HTTP_PORT, () =>
-      console.log(`Server listening on http://localhost:${HTTP_PORT}`)
-    );
   })
   .catch((err) => {
-    console.error("Failed to start server:", err);
+    console.error("Failed to initialize data:", err);
   });
